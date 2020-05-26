@@ -12,12 +12,11 @@ from opentrons.server.endpoints.calibration import models
 
 from robot_server.service.dependencies import get_session_manager, get_hardware
 from robot_server.service.errors import RobotServerError
-from robot_server.service.models.json_api.errors import Error
-from robot_server.service.models.json_api.resource_links import ResourceLink
+from robot_server.service.models.json_api import Error, ResourceLink,\
+    ResponseDataModel
 from robot_server.service.session.session_status import create_session_details
 from robot_server.service.models import session
 from robot_server.service.models.session import SessionCreateRequest
-from robot_server.service.models.json_api.response import ResponseDataModel
 
 router = APIRouter()
 
@@ -117,7 +116,6 @@ async def delete_session_handler(
     return session.SessionResponse(
         data=ResponseDataModel.create(
             attributes=session.Session(
-                sessionId=session_id,
                 # TODO support other session types
                 sessionType=models.SessionType.calibration_check,
                 details=create_session_details(session_obj)),
@@ -165,7 +163,6 @@ async def get_sessions_handler(
 
     sessions = (
         session.Session(
-            sessionId=session_id,
             # TODO use a proper session id rather than the type
             sessionType=models.SessionType(session_id),
             details=create_session_details(session_obj))

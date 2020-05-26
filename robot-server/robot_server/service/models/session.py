@@ -8,10 +8,8 @@ from opentrons.server.endpoints.calibration.session import \
     CalibrationCheckTrigger
 
 from robot_server.service.models import EmptyModel
-from robot_server.service.models.json_api.response import ResponseDataModel,\
-    ResponseModel
-from robot_server.service.models.json_api.request import RequestDataModel,\
-    RequestModel
+from robot_server.service.models.json_api import \
+    ResponseDataModel, ResponseModel, RequestDataModel, RequestModel
 
 
 SessionDetails = typing.Union[calibration_models.CalibrationSessionStatus]
