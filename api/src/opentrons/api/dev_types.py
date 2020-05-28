@@ -15,3 +15,8 @@ class StateInfo(TypedDict, total=False):
     userMessage: str
     #: If provided by the mechanism that changed the state, a message from the
     #: user
+    doorState: str
+    #: Current door state of the robot (open or closed)
+    blocked: bool
+    #: If the enableDoorSafetySwitch feature flag is on, an open doorState
+    #: would block the protocol (i.e. block = True)

@@ -454,14 +454,13 @@ export function client(dispatch) {
     }
 
     update.statusInfo = {
+      blocked: apiSession.stateInfo?.blocked ?? false,
+      doorState: apiSession.stateInfo?.doorState ?? '',
       message: apiSession.stateInfo?.message ?? null,
       userMessage: apiSession.stateInfo?.userMessage ?? null,
       changedAt: apiSession.stateInfo?.changedAt ?? null,
       estimatedDuration: apiSession.stateInfo?.estimatedDuration ?? null,
     }
-
-    update.blocked = apiSession.blocked ?? false
-    update.doorState = apiSession.door_state ?? ''
 
     // both light and full updates may have the errors list
     if (apiSession.errors) {

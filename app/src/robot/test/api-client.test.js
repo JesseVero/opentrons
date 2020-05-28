@@ -358,9 +358,9 @@ describe('api client', () => {
             userMessage: null,
             changedAt: null,
             estimatedDuration: null,
+            doorState: '',
+            blocked: false,
           },
-          doorState: 'closed',
-          blocked: false,
           protocolText: session.protocol_text,
           protocolCommands: [],
           protocolCommandsById: {},
@@ -402,6 +402,7 @@ describe('api client', () => {
     it('handles sessionResponses with some status info set', () => {
       session.stateInfo.changedAt = 2
       session.stateInfo.message = 'test message'
+      session.stateInfo.doorState = 'open'
       const expected = actions.sessionResponse(
         null,
         {
@@ -412,43 +413,9 @@ describe('api client', () => {
             userMessage: null,
             changedAt: 2,
             estimatedDuration: null,
+            doorState: 'open',
+            blocked: false,
           },
-          doorState: 'closed',
-          blocked: false,
-          protocolText: session.protocol_text,
-          protocolCommands: [],
-          protocolCommandsById: {},
-          pipettesByMount: {},
-          labwareBySlot: {},
-          modulesBySlot: {},
-          apiLevel: [1, 0],
-        },
-        false
-      )
-      return sendConnect()
-        .then(() => {
-          dispatch.mockClear()
-          sendNotification('session', session)
-        })
-        .then(() => expect(dispatch).toHaveBeenCalledWith(expected))
-    })
-
-    it('handles sessionResponses without door state and blocked info', () => {
-      session.blocked = null
-      session.door_state = null
-      const expected = actions.sessionResponse(
-        null,
-        {
-          name: session.name,
-          state: session.state,
-          statusInfo: {
-            message: null,
-            userMessage: null,
-            changedAt: null,
-            estimatedDuration: null,
-          },
-          doorState: '',
-          blocked: false,
           protocolText: session.protocol_text,
           protocolCommands: [],
           protocolCommandsById: {},
@@ -778,8 +745,6 @@ describe('api client', () => {
         startTime: 1,
         lastCommand: null,
         stateInfo: {},
-        door_state: 'open',
-        blocked: false,
       }
 
       const actionInput = {
@@ -791,9 +756,9 @@ describe('api client', () => {
           userMessage: null,
           changedAt: null,
           estimatedDuration: null,
+          doorState: '',
+          blocked: false,
         },
-        doorState: 'open',
-        blocked: false,
       }
       const expected = actions.sessionUpdate(actionInput, expect.any(Number))
 
@@ -814,13 +779,13 @@ describe('api client', () => {
 
       const actionInput = {
         ...update,
-        doorState: '',
-        blocked: false,
         statusInfo: {
           message: null,
           userMessage: null,
           changedAt: null,
           estimatedDuration: null,
+          doorState: '',
+          blocked: false,
         },
       }
       const expected = actions.sessionUpdate(actionInput, expect.any(Number))
@@ -838,12 +803,12 @@ describe('api client', () => {
         state: 'running',
         startTime: 2,
         lastCommand: null,
-        blocked: false,
-        door_state: 'closed',
         stateInfo: {
           message: 'hi and hello football fans',
           userMessage: 'whos ready for some FOOTBALL',
           changedAt: 2,
+          blocked: true,
+          doorState: 'open',
         },
       }
 
@@ -851,13 +816,13 @@ describe('api client', () => {
         state: 'running',
         startTime: 2,
         lastCommand: null,
-        blocked: false,
-        doorState: 'closed',
         statusInfo: {
           message: 'hi and hello football fans',
           userMessage: 'whos ready for some FOOTBALL',
           changedAt: 2,
           estimatedDuration: null,
+          blocked: true,
+          doorState: 'open',
         },
       }
       const expected = actions.sessionUpdate(actionInput, expect.any(Number))

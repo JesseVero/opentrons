@@ -274,8 +274,6 @@ class Session(object):
         self.startTime: Optional[float] = None
         self._motion_lock = motion_lock
         self._event_watcher = None
-        self.door_state: Optional[str] = None
-        self.blocked: Optional[bool] = None
 
     def _hw_iface(self):
         if self._use_v2:
@@ -521,12 +519,12 @@ class Session(object):
                 self._on_state_changed()
 
     def update_window_state(self, state: DoorState):
-        self.door_state = str(state)
+        self.stateInfo['doorState'] = str(state)
         if ff.enable_door_safety_switch() and \
                 state == DoorState.OPEN:
-            self.blocked = True
+            self.stateInfo['blocked'] = True
         else:
-            self.blocked = False
+            self.stateInfo['blocked'] = False
 
     @_motion_lock  # noqa(C901)
     def _run(self):
@@ -676,8 +674,6 @@ class Session(object):
                 'state': self.state,
                 'stateInfo': self.stateInfo,
                 'startTime': self.startTime,
-                'doorState': self.door_state,
-                'blocked': self.blocked,
                 'errors': self.errors,
                 'lastCommand': last_command
             }

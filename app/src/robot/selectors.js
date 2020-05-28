@@ -110,7 +110,7 @@ export function getIsPaused(state: State): boolean {
 }
 
 export function getIsBlocked(state: State): boolean {
-  return session(state).blocked
+  return getSessionStatusInfo(state).blocked
 }
 
 export function getCancelInProgress(state: State) {

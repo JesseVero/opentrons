@@ -159,21 +159,21 @@ export type ConnectionStatus =
   | CONNECTED
   | DISCONNECTING
 
+export type DoorState = '' | DOOR_OPEN | DOOR_CLOSED
+
 export type SessionStatusInfo = {|
   message: string | null,
   changedAt: number | null,
   estimatedDuration: number | null,
   userMessage: string | null,
+  blocked: boolean,
+  doorState: DoorState,
 |}
-
-export type DoorState = '' | DOOR_OPEN | DOOR_CLOSED
 
 export type SessionUpdate = {|
   state: SessionStatus,
   statusInfo: SessionStatusInfo,
   startTime: ?number,
-  doorState: DoorState,
-  blocked: boolean,
   lastCommand: ?{|
     id: number,
     handledAt: number,

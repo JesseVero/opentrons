@@ -134,18 +134,23 @@ def test_set_state(run_session):
 
 
 def test_set_state_info(run_session, monkeypatch):
-    assert run_session.stateInfo == {}
+    assert run_session.stateInfo == {'blocked': False,
+                                     'doorState': 'closed'}
     run_session.set_state('paused',
                           reason='test1',
                           user_message='cool message',
                           duration=10)
     assert run_session.stateInfo == {'message': 'test1',
                                      'userMessage': 'cool message',
-                                     'estimatedDuration': 10}
+                                     'estimatedDuration': 10,
+                                     'blocked': False,
+                                     'doorState': 'closed'}
     run_session.startTime = 300
     monkeypatch.setattr(session, 'now', lambda: 350)
     run_session.set_state('running')
-    assert run_session.stateInfo == {'changedAt': 50}
+    assert run_session.stateInfo == {'changedAt': 50,
+                                     'blocked': False,
+                                     'doorState': 'closed'}
 
 
 def test_error_append(run_session):
